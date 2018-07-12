@@ -3,6 +3,15 @@ class RecommendedReading::CLI
   LISTS = ["Amazon Bestsellers", "New York Times Bestsellers", "Barnes and Noble Bestsellers"]
 
   def call
+    testbook = RecommendedReading::Book.new('006242713X')
+    testbook.title = "The Plant Paradox"
+    testbook.author = "Steven R. Gundry"
+    testbook.ratings = [[3.84, 1]]
+    testbook.genres = ["Health", "Nonfiction", "Food and Drink > Food", "Science", "Health > Nutrition", "Self Help"]
+    testbook.summary = 'From renowned cardiac surgeon Steven R. Gundry, MD, a revolutionary look at the hidden compounds in "healthy" foods like fruit, vegetables, and whole grains that are causing us to gain weight and develop chronic disease.'
+    testbook.reviews = [[1, "To put it generously, I am not the intended audience for a book like this, and I would not normally seek out, let alone read, a diet book. Nonetheless..."]]
+    testbook.quotes = ["The most dangerous trick pulled by lectins, which I now see on a daily basis in my patients, is that they bear an uncanny similarity to the proteins on many of our important organs, nerves, and joints."]
+
     puts "Please enter the number of the booklist you would like to view"
     LISTS.each.with_index {|list, index| puts "#{index + 1}. #{list}"}
 
@@ -11,7 +20,7 @@ class RecommendedReading::CLI
     unless ["Q", "QUIT", "EXIT"].include?(input.upcase)
       case input.to_i
       when 1
-        display_list ["The Plant Paradox"]
+        display_list [testbook]
       when 2
         display_list ["The President is Missing"]
       when 3
@@ -25,7 +34,7 @@ class RecommendedReading::CLI
 
   def display_list(booklist)
     puts "Enter a book number for details or 'back' to select another list:"
-    booklist.each.with_index {|list, index| puts "#{index + 1}. #{list}"}
+    booklist.each.with_index {|book, index| puts "#{index + 1}. #{book.title}"}
     input = gets.strip
 
     if input == 'back'
@@ -39,19 +48,15 @@ class RecommendedReading::CLI
   end
 
   def book_details(book)
-    title = "The Plant Paradox"
-    author = "Steven R. Gundry"
-    rating = 3.84
-    genres = ["Health", "Nonfiction", "Food and Drink > Food", "Science", "Health > Nutrition", "Self Help"]
-    summary = 'From renowned cardiac surgeon Steven R. Gundry, MD, a revolutionary look at the hidden compounds in "healthy" foods like fruit, vegetables, and whole grains that are causing us to gain weight and develop chronic disease.'
-    puts "#{title} by #{author}"
-    puts "Average rating: #{rating}"
-    puts "Genres: #{genres}"
+    puts "#{book.title} by #{book.author}"
+    puts "Average rating: #{book.average_rating}"
+    puts "Genres: #{book.genres}"
     puts ""
-    puts "#{summary}"
+    puts book.summary
 
     input = nil
     while input != 5
+      puts ""
       puts "What would you like to see?"
       puts "1. Reviews"
       puts "2. Quotes"
@@ -63,9 +68,10 @@ class RecommendedReading::CLI
 
       case input
       when 1
-        puts "Review stub"
+        puts "#{book.reviews[0][0]} stars"
+        puts book.reviews[0][1]
       when 2
-        puts "Quotes stub"
+        puts book.quotes[0]
       when 3
         puts "Recommendation stub"
       when 4

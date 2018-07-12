@@ -1,5 +1,5 @@
 class RecommendedReading::Book
-  attr_accessor :isbn, :title, :author, :summary, :genres, :ratings, :quotes
+  attr_accessor :isbn, :title, :author, :summary, :genres, :ratings, :quotes, :reviews
 
   def initialize(isbn)
     self.isbn = isbn
@@ -15,7 +15,7 @@ class RecommendedReading::Book
     end
   end
 
-  def total_reviews
+  def total_ratings
 
   end
 end

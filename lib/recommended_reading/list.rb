@@ -5,6 +5,10 @@ class RecommendedReading::List
     self.books = []
   end
 
+  def add_book(book)
+    self.books << book
+  end
+
   def titles
   end
 
