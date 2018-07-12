@@ -7,7 +7,12 @@ class RecommendedReading::Book
   end
 
   def average_rating
-
+    if ratings.length > 0
+      combined = ratings.inject([0, 0]) {|total, rating| [total[0] + rating[0] * rating[1], total[1] + rating[1]]}
+      (combined[0] / combined[1].to_f).round(2)
+    else
+      "No ratings available"
+    end
   end
 
   def total_reviews
