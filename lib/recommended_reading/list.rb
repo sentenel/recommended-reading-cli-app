@@ -1,7 +1,8 @@
 class RecommendedReading::List
-  attr_accessor :books
+  attr_accessor :books, :title
 
-  def initialize
+  def initialize(title)
+    self.title = title
     self.books = []
   end
 
@@ -9,7 +10,8 @@ class RecommendedReading::List
     self.books << book
   end
 
-  def titles
+  def book_titles
+    books.map {|book| book.title}
   end
 
 end

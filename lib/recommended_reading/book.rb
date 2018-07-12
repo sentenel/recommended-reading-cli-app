@@ -16,6 +16,7 @@ class RecommendedReading::Book
   end
 
   def total_ratings
-
+    ratings.each {|rating| puts "#{rating[0]} star ratings: #{rating[1]}"}
+    puts "Total ratings: #{ratings.inject(0){|total, rating| total + rating[1]}}"
   end
 end
