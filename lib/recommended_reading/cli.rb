@@ -29,16 +29,53 @@ class RecommendedReading::CLI
     input = gets.strip
 
     if input == 'back'
-      self.call
+      call
     elsif (1..booklist.length).include?(input.to_i)
-      select_book booklist[input.to_i-1]
+      book_details booklist[input.to_i-1]
     else
       puts "I did not understand."
       display_list(booklist)
     end
   end
 
-  def select_book(book)
-  end
+  def book_details(book)
+    title = "The Plant Paradox"
+    author = "Steven R. Gundry"
+    rating = 3.84
+    genres = ["Health", "Nonfiction", "Food and Drink > Food", "Science", "Health > Nutrition", "Self Help"]
+    summary = 'From renowned cardiac surgeon Steven R. Gundry, MD, a revolutionary look at the hidden compounds in "healthy" foods like fruit, vegetables, and whole grains that are causing us to gain weight and develop chronic disease.'
+    puts "#{title} by #{author}"
+    puts "Average rating: #{rating}"
+    puts "Genres: #{genres}"
+    puts ""
+    puts "#{summary}"
 
+    input = nil
+    while input != 5
+      puts "What would you like to see?"
+      puts "1. Reviews"
+      puts "2. Quotes"
+      puts "3. Recommendations based on this book"
+      puts "4. Rating information"
+      puts "5. View another list"
+
+      input = gets.strip.to_i
+
+      case input
+      when 1
+        puts "Review stub"
+      when 2
+        puts "Quotes stub"
+      when 3
+        puts "Recommendation stub"
+      when 4
+        puts "Rating information stub"
+      when 5
+        break
+      else
+        puts "I did not understand."
+      end
+    end
+    call
+  end
 end
