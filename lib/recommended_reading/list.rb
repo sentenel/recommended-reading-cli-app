@@ -1,8 +1,7 @@
 class RecommendedReading::List
   attr_accessor :books, :title
 
-  def initialize(title)
-    self.title = title
+  def initialize
     self.books = []
   end
 

@@ -9,4 +9,7 @@ class RecommendedReading::ListScraper
   def scrape_barnes_and_noble_bestsellers
   end
 
+  def scrape_publishers_weekly
+  end
+
 end
