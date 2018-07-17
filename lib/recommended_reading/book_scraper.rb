@@ -1,4 +1,3 @@
-require 'pry'
 class RecommendedReading::BookScraper
 
   def scrape_goodreads(isbn)
@@ -10,16 +9,28 @@ class RecommendedReading::BookScraper
       book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
       ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
       book[:ratings] =ratings.map {|total| total.gsub(/ ratings/, '').to_i}
+      book[:reviews] = scrape_goodreads_reviews(isbn)
     end
   end
 
-  def scrape_goodreads_review(isbn)
-    doc = Nokogiri::HTML(open("https://www.goodreads.com/book/isbn#{isbn}"))
-    #review_url = 'https://www.goodreads.com' + doc.css('div#bookReviews div.left.bodycol a')[index]['href']
-    #review = Nokogiri::HTML(open(rating_url))
-    #reviewer: review.at("//a[@itemprop = 'author']").text
-    #opinion: rating.css('span.staticStar').first.text
-    #review_text: rating.at("//a[@itemprop = 'reviewBody']").text.strip
+  def scrape_goodreads_reviews(isbn)
+    doc = Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
+    review_url_parts = doc.css("a:contains('see review')").map {|element| element['href']}
+    Array.new.tap do |reviews|
+      review_url_parts.each do |url_part|
+        review_page = Nokogiri::HTML(open('https://www.goodreads.com' + url_part))
+        reviewer = review_page.at("//a[@itemprop = 'author']")
+        opinion = review_page.at("span.staticStar")
+        review_text = review_page.at("//div[@itemprop = 'reviewBody']")
+        if reviewer && opinion && review_text
+          reviews << {
+            reviewer: reviewer.text,
+            opinion: opinion.text,
+            review_text: review_text.text.strip
+          }
+        end
+      end
+    end
   end
 
 end
