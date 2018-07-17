@@ -8,8 +8,8 @@ class RecommendedReading::CLI
 
     puts "Please enter the number of the booklist you would like to view"
     LISTS.each.with_index {|list, index| puts "#{index + 1}. #{list}"}
-
     input = gets.strip
+    puts ""
 
     unless ["Q", "QUIT", "EXIT"].include?(input.upcase)
       case input.to_i
@@ -32,6 +32,7 @@ class RecommendedReading::CLI
     puts "Enter a book number for details or 'back' to select another list:"
     booklist.each.with_index {|book, index| puts "#{index + 1}. #{book.title}"}
     input = gets.strip
+    puts ""
 
     if input == 'back'
       call
@@ -53,9 +54,9 @@ class RecommendedReading::CLI
       puts ""
       puts "What would you like to see?"
       puts "1. Summary"
-      puts "2. Reviews"
-      puts "3. Recommendations based on this book"
-      puts "4. Rating information"
+      puts "2. Rating information"
+      puts "3. Reviews"
+      puts "4. Recommendations based on this book"
       puts "5. View another list"
 
       input = gets.strip.to_i
@@ -63,15 +64,14 @@ class RecommendedReading::CLI
 
       case input
       when 1
-        book.summary
+        puts book.summary
       when 2
-        puts "#{book.reviews[0][0]} stars"
-        puts book.reviews[0][1]
+        book.display_total_ratings
+        puts "Average rating: #{book.average_rating}"
       when 3
-        puts "Recommendation stub"
+        display_reviews(book)
       when 4
-        book.total_ratings
-        puts "#Average rating: #{book.average_rating}"
+        puts "Recommendation stub"
       when 5
         break
       else
@@ -80,4 +80,27 @@ class RecommendedReading::CLI
     end
     call
   end
+
+  def display_reviews(book)
+    book.reviews.each do |review|
+      puts "What would you like to do?"
+      puts "1. Next Review"
+      puts "2. Return to book"
+
+      input = gets.strip.to_i
+      puts ""
+
+      case input
+      when 1
+        puts "#{review[:reviewer]}: #{review[:opinion]}"
+        puts ""
+        puts review[:review_text]
+        puts ""
+      when 2
+        break
+      end
+    end
+    puts "No further reviews."
+  end
+
 end
