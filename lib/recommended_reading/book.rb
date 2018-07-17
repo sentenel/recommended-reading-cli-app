@@ -19,4 +19,8 @@ class RecommendedReading::Book
     ratings.each {|rating| puts "#{rating[0]} star ratings: #{rating[1]}"}
     puts "Total ratings: #{ratings.inject(0){|total, rating| total + rating[1]}}"
   end
+
+  def review_from_goodreads(review_index)
+  end
+
 end
