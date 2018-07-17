@@ -14,7 +14,7 @@ class RecommendedReading::Book
     end
   end
 
-  def total_ratings
+  def display_total_ratings
     ratings.each_with_index {|number, index| puts "#{5-index} star ratings: #{number}"}
     puts "Total ratings: #{ratings.reduce(:+)}"
   end
