@@ -9,7 +9,6 @@ class RecommendedReading::BookScraper
       book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
       ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
       book[:ratings] = ratings.map {|total| total.gsub(/ ratings/, '').to_i}
-      book[:reviews] = scrape_goodreads_reviews(isbn)
     end
   end
 
