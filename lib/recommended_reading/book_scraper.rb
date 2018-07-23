@@ -3,6 +3,7 @@ class RecommendedReading::BookScraper
   def self.scrape_goodreads(isbn)
     doc = Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
     Hash.new.tap do |book|
+      book[:isbn] = isbn
       book[:title] = doc.css('h1#bookTitle').text.strip
       book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
       book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
@@ -29,7 +30,7 @@ class RecommendedReading::BookScraper
             review_text: review_text.text.strip
           }
           review_counter += 1
-          break if review_counter > 9
+          break if review_counter > 4
         end
       end
     end
@@ -37,7 +38,7 @@ class RecommendedReading::BookScraper
 
   def self.scrape_from_amazon_link(link)
     doc = Nokogiri::HTML(open(link))
-    isbn = doc.at("li:contains('ISBN-10:')").text.gsub(/ISBN-10: /, '').to_i
+    isbn = doc.at("li:contains('ISBN-10:')").text.gsub(/ISBN-10: /, '')
     scrape_goodreads(isbn)
   end
 
