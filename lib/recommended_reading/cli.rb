@@ -4,8 +4,6 @@ class RecommendedReading::CLI
   LISTS = ["Amazon Bestsellers", "New York Times Bestsellers", "Barnes and Noble Bestsellers", "Publishers Weekly"]
 
   def call
-    testbook = RecommendedReading::Book.new_from_goodreads('006242713X')
-
     puts "Please enter the number of the booklist you would like to view"
     LISTS.each.with_index {|list, index| puts "#{index + 1}. #{list}"}
     input = gets.strip
@@ -14,7 +12,7 @@ class RecommendedReading::CLI
     unless ["Q", "QUIT", "EXIT"].include?(input.upcase)
       case input.to_i
       when 1
-        display_list [testbook]
+        display_list RecommendedReading::List.new_from_amazon
       when 2
         display_list ["The President is Missing"]
       when 3
@@ -30,14 +28,14 @@ class RecommendedReading::CLI
 
   def display_list(booklist)
     puts "Enter a book number for details or 'back' to select another list:"
-    booklist.each.with_index {|book, index| puts "#{index + 1}. #{book.title}"}
+    booklist.each.with_index {|book, index| puts "#{index + 1}. #{book[:title]}"}
     input = gets.strip
     puts ""
 
     if input == 'back'
       call
     elsif (1..booklist.length).include?(input.to_i)
-      book_details booklist[input.to_i-1]
+      book_details booklist.get_book(input.to_i-1)
     else
       puts "I did not understand."
       display_list(booklist)
