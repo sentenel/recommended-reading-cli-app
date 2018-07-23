@@ -14,5 +14,12 @@ class RecommendedReading::List < Array
       RecommendedReading::ListScraper.scrape_amazon_bestsellers.each {|book| list << book}
     end
   end
+
+  def get_book(index)
+    case list_source
+    when 'Amazon'
+      RecommendedReading::Book.new_from_amazon(self[index][:link])
+    end
+  end
   
 end
