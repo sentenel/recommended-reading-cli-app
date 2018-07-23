@@ -3,7 +3,7 @@ class RecommendedReading::BookScraper
   def self.scrape_goodreads(isbn)
     doc = Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
     Hash.new.tap do |book|
-      book[:title] = doc.css('h1.bookTitle').text.strip
+      book[:title] = doc.css('h1#bookTitle').text.strip
       book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
       book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
       book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
