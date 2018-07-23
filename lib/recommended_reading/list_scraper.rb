@@ -1,6 +1,16 @@
 class RecommendedReading::ListScraper
 
   def self.scrape_nyt_bestsellers
+    doc = Nokogiri::HTML(open("https://www.nytimes.com/books/best-sellers/combined-print-and-e-book-fiction/"))
+    book_containers = doc.css("article.book")
+    Array.new.tap do |books|
+      book_containers.each do |container|
+        books << {
+          title: container.at("h2.title").text,
+          link: container.at("button")["data-amazon"]
+        }
+      end
+    end
   end
 
   def self.scrape_amazon_bestsellers

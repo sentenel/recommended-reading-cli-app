@@ -14,7 +14,7 @@ class RecommendedReading::CLI
       when 1
         display_list RecommendedReading::List.new_from_amazon
       when 2
-        display_list ["The President is Missing"]
+        display_list RecommendedReading::List.new_from_nyt
       when 3
         display_list ["Clock Dance"]
       when 4
