@@ -14,6 +14,8 @@ class RecommendedReading::List < Array
     case list_source
     when 'Amazon', 'NYT'
       RecommendedReading::Book.new_from_amazon(self[index][:link])
+    when 'Barnes and Noble'
+      RecommendedReading::Book.new_from_barnes_and_noble(self[index][:link])
     end
   end
   
@@ -26,6 +28,12 @@ class RecommendedReading::List < Array
   def self.new_from_nyt
     self.new("NYT").tap do |list|
       RecommendedReading::ListScraper.scrape_nyt_bestsellers.each {|book| list << book}
+    end
+  end
+
+  def self.new_from_barnes_and_noble
+    self.new("Barnes and Noble").tap do |list|
+      RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers.each {|book| list << book}
     end
   end
       

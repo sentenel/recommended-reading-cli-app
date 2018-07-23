@@ -42,4 +42,10 @@ class RecommendedReading::BookScraper
     scrape_goodreads(isbn)
   end
 
+  def self.scrape_from_barnes_and_noble_link(link)
+    doc = Nokogiri::HTML(open(link))
+    isbn = doc.at("tr:contains('ISBN-13')").at('td').text
+    scrape_goodreads(isbn)
+  end
+
 end

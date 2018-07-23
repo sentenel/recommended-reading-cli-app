@@ -27,6 +27,18 @@ class RecommendedReading::ListScraper
   end
 
   def self.scrape_barnes_and_noble_bestsellers
+    homepage = Nokogiri::HTML(open("https://www.barnesandnoble.com"))
+    top_100 = "https://www.barnesandnoble.com" + homepage.at("div.top100-dark-on-gray a.btn--tile-top100")['href']
+    doc = Nokogiri::HTML(open(top_100))
+    book_containers = doc.css("div.product-info-listView")
+    Array.new.tap do |books|
+      book_containers.each do |container|
+        books << {
+          title: container.at("a").text,
+          link: "https://www.barnesandnoble.com" + container.at("a")['href']
+        }
+      end
+    end
   end
 
   def self.scrape_publishers_weekly

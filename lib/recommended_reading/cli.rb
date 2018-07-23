@@ -16,7 +16,7 @@ class RecommendedReading::CLI
       when 2
         display_list RecommendedReading::List.new_from_nyt
       when 3
-        display_list ["Clock Dance"]
+        display_list RecommendedReading::List.new_from_barnes_and_noble
       when 4
         display_list["stub"]
       else
