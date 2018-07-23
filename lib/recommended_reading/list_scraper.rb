@@ -1,9 +1,9 @@
 class RecommendedReading::ListScraper
 
-  def scrape_nyt_bestsellers
+  def self.scrape_nyt_bestsellers
   end
 
-  def scrape_amazon_bestsellers
+  def self.scrape_amazon_bestsellers
     list_length = 20
     doc = Nokogiri::HTML(open("https://www.amazon.com/bestsellers/books"))
     Array.new.tap do |books|
@@ -16,10 +16,10 @@ class RecommendedReading::ListScraper
     end
   end
 
-  def scrape_barnes_and_noble_bestsellers
+  def self.scrape_barnes_and_noble_bestsellers
   end
 
-  def scrape_publishers_weekly
+  def self.scrape_publishers_weekly
   end
 
 end
