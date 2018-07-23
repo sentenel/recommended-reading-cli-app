@@ -1,16 +1,18 @@
-class RecommendedReading::List
-  attr_accessor :books, :title
+class RecommendedReading::List < Array
+  attr_accessor :list_source
 
-  def initialize
-    self.books = []
-  end
-
-  def add_book(book)
-    self.books << book
+  def initialize(list_source)
+    self.list_source = list_source
   end
 
   def book_titles
-    books.map {|book| book.title}
+    self.map {|book| book.title}
   end
 
+  def self.new_from_amazon
+    self.new("Amazon").tap do |list|
+      RecommendedReading::ListScraper.scrape_amazon_bestsellers.each {|book| list << book}
+    end
+  end
+  
 end
