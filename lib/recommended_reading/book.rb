@@ -1,10 +1,6 @@
 class RecommendedReading::Book
   attr_accessor :isbn, :title, :authors, :summary, :genres, :ratings, :reviews
 
-  def initialize(isbn)
-    self.isbn = isbn
-  end
-
   def average_rating
     if ratings.length > 0
       weighted = ratings.map.with_index {|rating, index| rating * (5 - index)}.reduce(:+)
@@ -25,7 +21,14 @@ class RecommendedReading::Book
 
   def self.new_from_goodreads(isbn)
     book_hash = RecommendedReading::BookScraper.scrape_goodreads(isbn)
-    self.new(isbn).tap do |book|
+    self.new.tap do |book|
+      book_hash.each {|key, value| book.send("#{key}=", value)}
+    end
+  end
+
+  def self.new_from_amazon(link)
+    book_hash = RecommendedReading::BookScraper.scrape_from_amazon_link(link)
+    self.new.tap do |book|
       book_hash.each {|key, value| book.send("#{key}=", value)}
     end
   end
