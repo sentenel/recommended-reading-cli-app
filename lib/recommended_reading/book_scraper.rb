@@ -35,4 +35,10 @@ class RecommendedReading::BookScraper
     end
   end
 
+  def self.scrape_from_amazon_link(link)
+    doc = Nokogiri::HTML(open(link))
+    isbn = doc.at("li:contains('ISBN-10:')").text.gsub(/ISBN-10: /, '').to_i
+    scrape_goodreads(isbn)
+  end
+
 end
