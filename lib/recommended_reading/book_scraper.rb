@@ -48,4 +48,8 @@ class RecommendedReading::BookScraper
     scrape_goodreads(isbn)
   end
 
+  def self.scrape_from_publishers_weekly(isbn)
+    scrape_goodreads(isbn)
+  end
+
 end

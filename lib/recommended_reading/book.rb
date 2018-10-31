@@ -40,4 +40,11 @@ class RecommendedReading::Book
     end
   end
 
+  def self.new_from_publishers_weekly(isbn)
+    book_hash = RecommendedReading::BookScraper.scrape_from_publishers_weekly(isbn)
+    self.new.tap do |book|
+      book_hash.each {|key, value| book.send("#{key}=", value)}
+    end
+  end
+
 end

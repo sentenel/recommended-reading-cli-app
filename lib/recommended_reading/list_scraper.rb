@@ -42,6 +42,16 @@ class RecommendedReading::ListScraper
   end
 
   def self.scrape_publishers_weekly
+    doc = Nokogiri::HTML(open("https://www.publishersweekly.com/pw/nielsen/top100.html"))
+    book_containers = doc.css("td.nielsen-bookinfo")
+    Array.new.tap do |books|
+      book_containers.each do |container|
+        books << {
+          title: container.at("div.nielsen-booktitle").text.strip,
+          isbn: container.at("div.nielsen-isbn").text[/\d+-\d+-\d+-\d+-\d+/].gsub('-', '')
+        }
+      end
+    end
   end
 
 end

@@ -16,9 +16,11 @@ class RecommendedReading::List < Array
       RecommendedReading::Book.new_from_amazon(self[index][:link])
     when 'Barnes and Noble'
       RecommendedReading::Book.new_from_barnes_and_noble(self[index][:link])
+    when 'Publishers Weekly'
+      RecommendedReading::Book.new_from_publishers_weekly(self[index][:isbn])
     end
   end
-  
+
   def self.new_from_amazon
     self.new("Amazon").tap do |list|
       RecommendedReading::ListScraper.scrape_amazon_bestsellers.each {|book| list << book}
@@ -36,5 +38,11 @@ class RecommendedReading::List < Array
       RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers.each {|book| list << book}
     end
   end
-      
+
+  def self.new_from_publishers_weekly
+    self.new("Publishers Weekly").tap do |list|
+      RecommendedReading::ListScraper.scrape_publishers_weekly.each {|book| list << book}
+    end
+  end
+
 end

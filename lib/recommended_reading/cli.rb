@@ -18,7 +18,7 @@ class RecommendedReading::CLI
       when 3
         display_list RecommendedReading::List.new_from_barnes_and_noble
       when 4
-        display_list["stub"]
+        display_list RecommendedReading::List.new_from_publishers_weekly
       else
         puts "I did not understand."
         call
