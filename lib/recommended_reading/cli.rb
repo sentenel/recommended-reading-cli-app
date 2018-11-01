@@ -67,7 +67,7 @@ class RecommendedReading::CLI
       when 3
         display_reviews(book)
       when 4
-        puts "Recommendation stub"
+        display_recommendations(book)
       when 5
         break
       else
@@ -99,4 +99,26 @@ class RecommendedReading::CLI
     puts "No further reviews."
   end
 
+  def display_recommendations(book)
+    recommendations = book.recommendations
+    if recommendations.length == 0
+      puts "No recommendations available."
+      puts ""
+      book_details(book)
+    end
+
+    puts "Please enter a book number for details or 'back' to return."
+    puts ""
+    recommendations.each_with_index {|recommendation, index| puts "#{index + 1}. #{recommendation[:title]}"}
+
+    input = gets.strip
+    if input == 'back'
+      book_details(book)
+    elsif (1..recommendations.length).include?(input.to_i)
+      book_details recommendations.get_book(input.to_i - 1)
+    else
+      puts "I did not understand."
+      display_recommendations(book)
+    end
+  end
 end

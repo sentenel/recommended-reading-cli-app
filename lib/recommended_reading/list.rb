@@ -16,6 +16,8 @@ class RecommendedReading::List < Array
       RecommendedReading::Book.new_from_barnes_and_noble(self[index][:link])
     when 'Publishers Weekly'
       RecommendedReading::Book.new_from_publishers_weekly(self[index][:isbn])
+    when 'Recommendations'
+      RecommendedReading::Book.new_from_goodreads_link(self[index][:link])
     end
   end
 

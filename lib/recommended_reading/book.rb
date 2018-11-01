@@ -1,5 +1,5 @@
 class RecommendedReading::Book
-  attr_accessor :isbn, :title, :authors, :summary, :genres, :ratings, :reviews
+  attr_accessor :isbn, :title, :authors, :summary, :genres, :ratings, :reviews, :recommendations
 
   def average_rating
     if ratings.length > 0
@@ -21,6 +21,13 @@ class RecommendedReading::Book
 
   def self.new_from_goodreads(isbn)
     book_hash = RecommendedReading::BookScraper.scrape_goodreads(isbn)
+    self.new.tap do |book|
+      book_hash.each {|key, value| book.send("#{key}=", value)}
+    end
+  end
+
+  def self.new_from_goodreads_link(link)
+    book_hash = RecommendedReading::BookScraper.scrape_goodreads_link(link)
     self.new.tap do |book|
       book_hash.each {|key, value| book.send("#{key}=", value)}
     end

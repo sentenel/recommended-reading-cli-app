@@ -1,16 +1,21 @@
 class RecommendedReading::BookScraper
 
-  def self.scrape_goodreads(isbn)
-    doc = Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
+  def self.scrape_goodreads(isbn, link = nil)
+    doc = link ? Nokogiri::HTML(open(link)) : Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
     Hash.new.tap do |book|
-      book[:isbn] = isbn
+      book[:isbn] = isbn || doc.xpath("//meta[@property='books:isbn']")[0]['content']
       book[:title] = doc.css('h1#bookTitle').text.strip
       book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
       book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
       book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
       ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
       book[:ratings] = ratings.map {|total| total.gsub(/ ratings/, '').to_i}
+      book[:recommendations] = scrape_goodreads_recommendations(doc)
     end
+  end
+
+  def self.scrape_goodreads_link(link)
+    scrape_goodreads(nil, link)
   end
 
   def self.scrape_goodreads_reviews(isbn)
@@ -44,6 +49,19 @@ class RecommendedReading::BookScraper
 
   def self.scrape_from_publishers_weekly(isbn)
     scrape_goodreads(isbn)
+  end
+
+  private
+
+  def self.scrape_goodreads_recommendations(doc)
+    RecommendedReading::List.new("Recommendations").tap do |recommendation_list|
+      doc.css("li.cover a").each do |recommendation|
+        recommendation_list << {
+          title: recommendation.at("img")["alt"],
+          link: recommendation['href']
+        }
+      end
+    end
   end
 
 end
