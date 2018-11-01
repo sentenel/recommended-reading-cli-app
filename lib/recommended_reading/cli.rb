@@ -1,7 +1,7 @@
 require 'pry'
 class RecommendedReading::CLI
 
-  LISTS = ["Amazon Bestsellers", "New York Times Bestsellers", "Barnes and Noble Bestsellers", "Publishers Weekly"]
+  LISTS = ["New York Times Bestsellers", "Barnes and Noble Bestsellers", "Publishers Weekly"]
 
   def call
     puts "Please enter the number of the booklist you would like to view"
@@ -12,12 +12,10 @@ class RecommendedReading::CLI
     unless ["Q", "QUIT", "EXIT"].include?(input.upcase)
       case input.to_i
       when 1
-        display_list RecommendedReading::List.new_from_amazon
-      when 2
         display_list RecommendedReading::List.new_from_nyt
-      when 3
+      when 2
         display_list RecommendedReading::List.new_from_barnes_and_noble
-      when 4
+      when 3
         display_list RecommendedReading::List.new_from_publishers_weekly
       else
         puts "I did not understand."

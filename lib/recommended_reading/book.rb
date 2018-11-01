@@ -26,13 +26,6 @@ class RecommendedReading::Book
     end
   end
 
-  def self.new_from_amazon(link)
-    book_hash = RecommendedReading::BookScraper.scrape_from_amazon_link(link)
-    self.new.tap do |book|
-      book_hash.each {|key, value| book.send("#{key}=", value)}
-    end
-  end
-
   def self.new_from_barnes_and_noble(link)
     book_hash = RecommendedReading::BookScraper.scrape_from_barnes_and_noble_link(link)
     self.new.tap do |book|
