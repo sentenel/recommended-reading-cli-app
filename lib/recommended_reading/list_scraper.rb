@@ -15,7 +15,7 @@ class RecommendedReading::ListScraper
 
   def self.scrape_barnes_and_noble_bestsellers
     homepage = Nokogiri::HTML(open("https://www.barnesandnoble.com"))
-    top_100 = "https://www.barnesandnoble.com" + homepage.at("div.top100-dark-on-gray a.btn--tile-top100")['href']
+    top_100 = "https://www.barnesandnoble.com" + homepage.at("a:contains('TOP 100')")['href']
     doc = Nokogiri::HTML(open(top_100))
     book_containers = doc.css("div.product-info-listView")
     Array.new.tap do |books|
