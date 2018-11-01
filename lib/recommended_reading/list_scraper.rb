@@ -7,7 +7,7 @@ class RecommendedReading::ListScraper
       book_containers.each do |container|
         books << {
           title: container.at("h2.title").text,
-          link: container.at("button")["data-amazon"]
+          link: container.at("button")["data-barnesandnoble"][/http%.*/].gsub(/%[1-9A-F]{1,2}/){|hex| hex[1, 2].to_i(16).chr}.insert(4, 's')
         }
       end
     end

@@ -12,9 +12,9 @@ class RecommendedReading::List < Array
 
   def get_book(index)
     case list_source
-    when 'Amazon', 'NYT'
+    when 'Amazon'
       RecommendedReading::Book.new_from_amazon(self[index][:link])
-    when 'Barnes and Noble'
+    when 'Barnes and Noble', 'NYT'
       RecommendedReading::Book.new_from_barnes_and_noble(self[index][:link])
     when 'Publishers Weekly'
       RecommendedReading::Book.new_from_publishers_weekly(self[index][:isbn])
