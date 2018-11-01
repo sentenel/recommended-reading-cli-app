@@ -22,6 +22,8 @@ class RecommendedReading::CLI
         call
       end
     end
+
+    exit
   end
 
   def display_list(booklist)
