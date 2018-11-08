@@ -1,9 +1,9 @@
 class RecommendedReading::BookScraper
 
-  def self.scrape_goodreads(isbn, link = nil)
-    doc = link ? Nokogiri::HTML(open(link)) : Nokogiri::HTML(open("https://www.goodreads.com/book/isbn/#{isbn}"))
+  def self.scrape_goodreads(link)
+    doc = Nokogiri::HTML(open(link))
     Hash.new.tap do |book|
-      book[:isbn] = isbn || doc.xpath("//meta[@property='books:isbn']")[0]['content']
+      book[:isbn] = doc.xpath("//meta[@property='books:isbn']")[0]['content']
       book[:title] = doc.css('h1#bookTitle').text.strip
       book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
       book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
@@ -14,8 +14,8 @@ class RecommendedReading::BookScraper
     end
   end
 
-  def self.scrape_goodreads_link(link)
-    scrape_goodreads(nil, link)
+  def self.scrape_goodreads_isbn(isbn)
+    scrape_goodreads("https://www.goodreads.com/book/isbn/#{isbn}")
   end
 
   def self.scrape_goodreads_reviews(isbn)
@@ -44,11 +44,11 @@ class RecommendedReading::BookScraper
   def self.scrape_from_barnes_and_noble_link(link)
     doc = Nokogiri::HTML(open(link))
     isbn = doc.at("tr:contains('ISBN-13')").at('td').text
-    scrape_goodreads(isbn)
+    scrape_goodreads_isbn(isbn)
   end
 
   def self.scrape_from_publishers_weekly(isbn)
-    scrape_goodreads(isbn)
+    scrape_goodreads_isbn(isbn)
   end
 
   private

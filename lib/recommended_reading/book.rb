@@ -20,14 +20,14 @@ class RecommendedReading::Book
   end
 
   def self.new_from_goodreads(isbn)
-    book_hash = RecommendedReading::BookScraper.scrape_goodreads(isbn)
+    book_hash = RecommendedReading::BookScraper.scrape_goodreads_isbn(isbn)
     self.new.tap do |book|
       book_hash.each {|key, value| book.send("#{key}=", value)}
     end
   end
 
   def self.new_from_goodreads_link(link)
-    book_hash = RecommendedReading::BookScraper.scrape_goodreads_link(link)
+    book_hash = RecommendedReading::BookScraper.scrape_goodreads(link)
     self.new.tap do |book|
       book_hash.each {|key, value| book.send("#{key}=", value)}
     end
