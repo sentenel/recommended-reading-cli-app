@@ -103,7 +103,7 @@ class RecommendedReading::CLI
 
   def display_recommendations(book)
     recommendations = book.recommendations
-    if recommendations.length == 0
+    if recommendations.empty?
       puts "No recommendations available."
       puts ""
       book_details(book)
