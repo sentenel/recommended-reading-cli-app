@@ -43,6 +43,12 @@ class RecommendedReading::CLI
   end
 
   def book_details(book)
+    unless book.title
+      puts "Book not found. Please make a new selection."
+      puts ""
+      call
+    end
+
     puts "#{book.title} by #{book.authors}"
     puts "Average rating: #{book.average_rating}"
     puts "Genres: #{book.genres}"

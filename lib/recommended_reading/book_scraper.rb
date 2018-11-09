@@ -2,15 +2,19 @@ class RecommendedReading::BookScraper
 
   def self.scrape_goodreads(link)
     doc = Nokogiri::HTML(open(link))
-    Hash.new.tap do |book|
-      book[:isbn] = doc.xpath("//meta[@property='books:isbn']")[0]['content']
-      book[:title] = doc.css('h1#bookTitle').text.strip
-      book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
-      book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
-      book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
-      ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
-      book[:ratings] = ratings.map {|total| total.gsub(/ ratings/, '').to_i}
-      book[:recommendations] = scrape_goodreads_recommendations(doc)
+    if !doc.css("link[rel=canonical]").first['href'] == "https://www.goodreads.com/book"
+      Hash.new.tap do |book|
+        book[:isbn] = doc.xpath("//meta[@property='books:isbn']")[0]['content']
+        book[:title] = doc.css('h1#bookTitle').text.strip
+        book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
+        book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
+        book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
+        ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
+        book[:ratings] = ratings.map {|total| total.gsub(/ ratings/, '').to_i}
+        book[:recommendations] = scrape_goodreads_recommendations(doc)
+      end
+    else
+      Hash.new
     end
   end
 
