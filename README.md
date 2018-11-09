@@ -1,8 +1,6 @@
 # RecommendedReading
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/recommended_reading`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The Recommended Reading CLI scrapes lists of top selling or recommended books from various sources such as the New York Times, Barnes and Noble, and Publishers Weekly, and then allows the user to view information about and reviews of those books from goodreads.com.
 
 ## Installation
 
@@ -22,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+enter `bin/recommended-reading` and follow the prompts.
 
 ## Development
 
