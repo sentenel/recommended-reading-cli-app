@@ -76,8 +76,6 @@ class RecommendedReading::CLI
         display_reviews(book)
       when 4
         display_recommendations(book)
-      when 5
-        break
       else
         puts "I did not understand."
       end
