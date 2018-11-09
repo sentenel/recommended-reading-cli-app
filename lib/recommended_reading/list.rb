@@ -22,21 +22,15 @@ class RecommendedReading::List < Array
   end
 
   def self.new_from_nyt
-    self.new("NYT").tap do |list|
-      RecommendedReading::ListScraper.scrape_nyt_bestsellers.each {|book| list << book}
-    end
+    RecommendedReading::ListScraper.scrape_nyt_bestsellers
   end
 
   def self.new_from_barnes_and_noble
-    self.new("Barnes and Noble").tap do |list|
-      RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers.each {|book| list << book}
-    end
+    RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers
   end
 
   def self.new_from_publishers_weekly
-    self.new("Publishers Weekly").tap do |list|
-      RecommendedReading::ListScraper.scrape_publishers_weekly.each {|book| list << book}
-    end
+    RecommendedReading::ListScraper.scrape_publishers_weekly
   end
 
 end
