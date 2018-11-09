@@ -21,27 +21,27 @@ class RecommendedReading::Book
 
   def self.new_from_goodreads(isbn)
     book_hash = RecommendedReading::BookScraper.scrape_goodreads_isbn(isbn)
-    self.new.tap do |book|
-      book_hash.each {|key, value| book.send("#{key}=", value)}
-    end
+    create_book(book_hash)
   end
 
   def self.new_from_goodreads_link(link)
     book_hash = RecommendedReading::BookScraper.scrape_goodreads(link)
-    self.new.tap do |book|
-      book_hash.each {|key, value| book.send("#{key}=", value)}
-    end
+    create_book(book_hash)
   end
 
   def self.new_from_barnes_and_noble(link)
     book_hash = RecommendedReading::BookScraper.scrape_from_barnes_and_noble_link(link)
-    self.new.tap do |book|
-      book_hash.each {|key, value| book.send("#{key}=", value)}
-    end
+    create_book(book_hash)
   end
 
   def self.new_from_publishers_weekly(isbn)
     book_hash = RecommendedReading::BookScraper.scrape_from_publishers_weekly(isbn)
+    create_book(book_hash)
+  end
+
+  private
+
+  def self.create_book(book_hash)
     self.new.tap do |book|
       book_hash.each {|key, value| book.send("#{key}=", value)}
     end
