@@ -1,4 +1,3 @@
-require 'pry'
 class RecommendedReading::CLI
 
   LISTS = ["New York Times Bestsellers", "Barnes and Noble Bestsellers", "Publishers Weekly"]
