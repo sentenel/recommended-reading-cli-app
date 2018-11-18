@@ -4,7 +4,7 @@ class RecommendedReading::BookScraper
     doc = Nokogiri::HTML(open(link))
     if !(doc.css("link[rel=canonical]").first['href'] == "https://www.goodreads.com/book")
       Hash.new.tap do |book|
-        book[:isbn] = doc.xpath("//meta[@property='books:isbn']")[0]['content']
+        book[:isbn] = doc.at("//meta[@property='books:isbn']")['content']
         book[:title] = doc.css('h1#bookTitle').text.strip
         book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
         book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
