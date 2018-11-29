@@ -26,10 +26,12 @@ class RecommendedReading::CLI
   end
 
   def display_list(booklist)
-    puts "Enter a book number for details or 'back' to select another list:"
+
     booklist.books.each.with_index {|book, index| puts "#{index + 1}. #{book[:title]}"}
-    input = gets.strip
     puts ""
+    puts "Enter a book number for details or 'back' to select another list:"
+    input = gets.strip
+
 
     if input == 'back'
       call
@@ -61,6 +63,7 @@ class RecommendedReading::CLI
       puts "3. Reviews"
       puts "4. Recommendations based on this book"
       puts "5. View another list"
+      puts "6. Quit"
 
       input = gets.strip.to_i
       puts ""
@@ -76,6 +79,8 @@ class RecommendedReading::CLI
       when 4
         display_recommendations(book)
       when 5
+      when 6
+        exit
       else
         puts "I did not understand."
       end
@@ -84,25 +89,30 @@ class RecommendedReading::CLI
   end
 
   def display_reviews(book)
+    puts "No reviews available." if book.reviews.length == 0
     book.reviews.each do |review|
-      puts "What would you like to do?"
-      puts "1. Next Review"
-      puts "2. Return to book"
-
-      input = gets.strip.to_i
+      puts "#{review[:reviewer]}: #{review[:opinion]}"
+      puts ""
+      puts review[:review_text]
       puts ""
 
-      case input
-      when 1
-        puts "#{review[:reviewer]}: #{review[:opinion]}"
-        puts ""
-        puts review[:review_text]
-        puts ""
-      when 2
+      if review == book.reviews[-1]
+        puts "No further reviews."
         break
       end
+
+      input = nil
+      until [1, 2].include?(input)
+        puts "What would you like to do?"
+        puts "1. Next Review"
+        puts "2. Return to book"
+
+        input = gets.strip.to_i
+        puts ""
+        puts "I did not understand." unless [1, 2].include?(input)
+      end
+      break if input == 2
     end
-    puts "No further reviews."
   end
 
   def display_recommendations(book)
