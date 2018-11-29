@@ -10,11 +10,6 @@ class RecommendedReading::Book
     end
   end
 
-  def display_total_ratings
-    ratings.each_with_index {|number, index| puts "#{5-index} star ratings: #{number}"}
-    puts "Total ratings: #{ratings.reduce(:+)}"
-  end
-
   def reviews
     reviews ||= RecommendedReading::BookScraper.scrape_goodreads_reviews(isbn)
   end
