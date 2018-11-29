@@ -27,13 +27,13 @@ class RecommendedReading::CLI
 
   def display_list(booklist)
     puts "Enter a book number for details or 'back' to select another list:"
-    booklist.each.with_index {|book, index| puts "#{index + 1}. #{book[:title]}"}
+    booklist.books.each.with_index {|book, index| puts "#{index + 1}. #{book[:title]}"}
     input = gets.strip
     puts ""
 
     if input == 'back'
       call
-    elsif (1..booklist.length).include?(input.to_i)
+    elsif (1..booklist.books.length).include?(input.to_i)
       book_details booklist.get_book(input.to_i-1)
     else
       puts "I did not understand."
@@ -69,7 +69,7 @@ class RecommendedReading::CLI
       when 1
         puts book.summary
       when 2
-        book.display_total_ratings
+        display_total_ratings(book)
         puts "Average rating: #{book.average_rating}"
       when 3
         display_reviews(book)
@@ -126,5 +126,10 @@ class RecommendedReading::CLI
       puts "I did not understand."
       display_recommendations(book)
     end
+  end
+
+  def display_total_ratings(book)
+    book.ratings.each_with_index {|number, index| puts "#{5-index} star ratings: #{number}"}
+    puts "Total ratings: #{book.ratings.reduce(:+)}"
   end
 end
