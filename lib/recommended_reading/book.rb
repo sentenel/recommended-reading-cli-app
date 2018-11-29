@@ -11,7 +11,7 @@ class RecommendedReading::Book
   end
 
   def reviews
-    reviews ||= RecommendedReading::BookScraper.scrape_goodreads_reviews(isbn)
+    @reviews ||= RecommendedReading::BookScraper.scrape_goodreads_reviews(isbn)
   end
 
   def self.new_from_goodreads(isbn)
