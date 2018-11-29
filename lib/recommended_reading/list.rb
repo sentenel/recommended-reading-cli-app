@@ -1,23 +1,21 @@
-class RecommendedReading::List < Array
-  attr_accessor :list_source
+class RecommendedReading::List
+  attr_accessor :list_source, :books
+  @@all = []
 
   def initialize(list_source)
-    self.list_source = list_source
+    @list_source = list_source
+    @books = {}
+    @@all < self
   end
-
-  def book_titles
-    self.map {|book| book.title}
-  end
-
 
   def get_book(index)
     case list_source
     when 'Barnes and Noble', 'NYT'
-      RecommendedReading::Book.new_from_barnes_and_noble(self[index][:link])
+      RecommendedReading::Book.new_from_barnes_and_noble(@books[index][:link])
     when 'Publishers Weekly'
-      RecommendedReading::Book.new_from_publishers_weekly(self[index][:isbn])
+      RecommendedReading::Book.new_from_publishers_weekly(@books[index][:isbn])
     when 'Recommendations'
-      RecommendedReading::Book.new_from_goodreads_link(self[index][:link])
+      RecommendedReading::Book.new_from_goodreads_link(@books[index][:link])
     end
   end
 
