@@ -58,9 +58,9 @@ class RecommendedReading::BookScraper
   private
 
   def self.scrape_goodreads_recommendations(doc)
-    RecommendedReading::List.new("Recommendations").tap do |recommendation_list|
+    RecommendedReading::List.new("Recommendations").tap do |list|
       doc.css("li.cover a").each do |recommendation|
-        recommendation_list << {
+        list.books << {
           title: recommendation.at("img")["alt"],
           link: recommendation['href']
         }

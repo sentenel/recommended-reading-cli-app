@@ -4,8 +4,8 @@ class RecommendedReading::List
 
   def initialize(list_source)
     @list_source = list_source
-    @books = {}
-    @@all < self
+    @books = []
+    @@all << self
   end
 
   def get_book(index)

@@ -107,7 +107,7 @@ class RecommendedReading::CLI
 
   def display_recommendations(book)
     recommendations = book.recommendations
-    if recommendations.empty?
+    if recommendations.books.empty?
       puts "No recommendations available."
       puts ""
       book_details(book)
@@ -115,12 +115,12 @@ class RecommendedReading::CLI
 
     puts "Please enter a book number for details or 'back' to return."
     puts ""
-    recommendations.each_with_index {|recommendation, index| puts "#{index + 1}. #{recommendation[:title]}"}
+    recommendations.books.each_with_index {|recommendation, index| puts "#{index + 1}. #{recommendation[:title]}"}
 
     input = gets.strip
     if input == 'back'
       book_details(book)
-    elsif (1..recommendations.length).include?(input.to_i)
+    elsif (1..recommendations.books.length).include?(input.to_i)
       book_details recommendations.get_book(input.to_i - 1)
     else
       puts "I did not understand."
