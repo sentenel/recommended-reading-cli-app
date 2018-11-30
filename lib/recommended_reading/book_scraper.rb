@@ -8,7 +8,7 @@ class RecommendedReading::BookScraper
         book[:title] = doc.css('h1#bookTitle').text.strip
         book[:authors] = doc.css('div#bookAuthors').text.gsub(/( by)*?/, '').strip.gsub(/by\n+/, '')
         book[:summary] = doc.css('div#description').text.gsub(/\.\.\.more/, '').strip
-        book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}
+        book[:genres] = doc.css('div.left a.bookPageGenreLink').map {|element| element.text}.uniq
         ratings = doc.css('div#bookMeta script').first.children.first.content.scan(/\d+ ratings/)
         book[:ratings] = ratings.map {|total| total.gsub(/ ratings/, '').to_i}
         book[:recommendations] = scrape_goodreads_recommendations(doc)
