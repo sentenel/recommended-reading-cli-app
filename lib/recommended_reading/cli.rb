@@ -3,26 +3,26 @@ class RecommendedReading::CLI
   LISTS = ["New York Times Bestsellers", "Barnes and Noble Bestsellers", "Publishers Weekly"]
 
   def call
-    puts "Please enter the number of the booklist you would like to view"
     LISTS.each.with_index {|list, index| puts "#{index + 1}. #{list}"}
+    puts "#{LISTS.length + 1}. Quit"
+    puts "Please enter the number of the booklist you would like to view, or #{LISTS.length + 1} to quit."
     input = gets.strip
     puts ""
 
-    unless ["Q", "QUIT", "EXIT"].include?(input.upcase)
-      case input.to_i
-      when 1
-        display_list RecommendedReading::List.new_from_nyt
-      when 2
-        display_list RecommendedReading::List.new_from_barnes_and_noble
-      when 3
-        display_list RecommendedReading::List.new_from_publishers_weekly
-      else
-        puts "I did not understand."
-        call
-      end
+    case input.to_i
+    when 1
+      display_list RecommendedReading::List.new_from_nyt
+    when 2
+      display_list RecommendedReading::List.new_from_barnes_and_noble
+    when 3
+      display_list RecommendedReading::List.new_from_publishers_weekly
+    when LISTS.length + 1
+      puts "Thank you for using Recommended Reading!"
+      exit
+    else
+      puts "I did not understand."
+      call
     end
-
-    exit
   end
 
   def display_list(booklist)
