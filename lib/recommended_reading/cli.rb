@@ -52,7 +52,7 @@ class RecommendedReading::CLI
 
     puts "#{book.title} by #{book.authors}"
     puts "Average rating: #{book.average_rating}"
-    puts "Genres: #{book.genres}"
+    puts "Genres: #{book.genres.join(', ')}"
 
     input = nil
     while input != 5
