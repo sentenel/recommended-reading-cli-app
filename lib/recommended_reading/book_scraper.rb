@@ -68,4 +68,5 @@ class RecommendedReading::BookScraper
     end
   end
 
+
 end
