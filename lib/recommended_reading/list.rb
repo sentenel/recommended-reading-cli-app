@@ -20,15 +20,15 @@ class RecommendedReading::List
   end
 
   def self.new_from_nyt
-    RecommendedReading::ListScraper.scrape_nyt_bestsellers
+    @@all.find {|list| list.list_source == 'NYT'} || RecommendedReading::ListScraper.scrape_nyt_bestsellers
   end
 
   def self.new_from_barnes_and_noble
-    RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers
+    @@all.find {|list| list.list_source == 'Barnes and Noble'} || RecommendedReading::ListScraper.scrape_barnes_and_noble_bestsellers
   end
 
   def self.new_from_publishers_weekly
-    RecommendedReading::ListScraper.scrape_publishers_weekly
+    @@all.find {|list| list.list_source == 'Publishers Weekly'} || RecommendedReading::ListScraper.scrape_publishers_weekly
   end
 
 end
